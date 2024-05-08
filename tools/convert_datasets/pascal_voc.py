@@ -1,18 +1,18 @@
 import argparse
 import os.path as osp
-import xml.etree.ElementTree as ET
 
 import mmcv
 import numpy as np
 
 from mmdet.core import voc_classes
+import defusedxml.ElementTree
 
 label_ids = {name: i + 1 for i, name in enumerate(voc_classes())}
 
 
 def parse_xml(args):
     xml_path, img_path = args
-    tree = ET.parse(xml_path)
+    tree = defusedxml.ElementTree.parse(xml_path)
     root = tree.getroot()
     size = root.find('size')
     w = int(size.find('width').text)

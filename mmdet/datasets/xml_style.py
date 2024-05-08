@@ -1,10 +1,10 @@
 import os.path as osp
-import xml.etree.ElementTree as ET
 
 import mmcv
 import numpy as np
 
 from .custom import CustomDataset
+import defusedxml.ElementTree
 
 
 class XMLDataset(CustomDataset):
@@ -20,7 +20,7 @@ class XMLDataset(CustomDataset):
             filename = 'JPEGImages/{}.jpg'.format(img_id)
             xml_path = osp.join(self.img_prefix, 'Annotations',
                                 '{}.xml'.format(img_id))
-            tree = ET.parse(xml_path)
+            tree = defusedxml.ElementTree.parse(xml_path)
             root = tree.getroot()
             size = root.find('size')
             width = int(size.find('width').text)
@@ -33,7 +33,7 @@ class XMLDataset(CustomDataset):
         img_id = self.img_infos[idx]['id']
         xml_path = osp.join(self.img_prefix, 'Annotations',
                             '{}.xml'.format(img_id))
-        tree = ET.parse(xml_path)
+        tree = defusedxml.ElementTree.parse(xml_path)
         root = tree.getroot()
         bboxes = []
         labels = []
